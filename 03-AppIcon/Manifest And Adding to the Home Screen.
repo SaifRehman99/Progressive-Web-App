@@ -1,0 +1,132 @@
+@Manifest
+
+1)The web app manifest is a simple JSON file that tells the browser about your web application and how it should behave when 'installed' on the user's mobile device or desktop. Having a manifest is required by Chrome to show the Add to Home Screen prompt.
+
+2)A typical manifest file includes information about the app name, icons it should use, the start_url it should start at when launched, and more.
+
+3)A complete manifest.json file for a progressive web app.
+{
+  "short_name": "Maps",
+  "name": "Google Maps",
+  "icons": [
+    {
+      "src": "/images/icons-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/images/icons-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/maps/?source=pwa",
+  "background_color": "#3367D6",
+  "display": "standalone",
+  "scope": "/maps/",
+  "theme_color": "#3367D6"
+}
+
+
+4)SHORT-NAME/NAME:
+You must provide at least the short_name or name property. If both are provided, short_name is used on the user's home screen, launcher, or other places where space may be limited. name is used in the app install prompt.
+
+"short_name": "Maps",
+"name": "Google Maps
+
+
+5)ICONS
+When a user adds your site to their home screen, you can define a set of icons for the browser to use. These icons are used in places like the home screen, app launcher, task switcher, splash screen, etc.
+
+icons is an array of image objects. Each object should include the src, a sizes property, and the type of image.
+
+"icons": [
+  {
+    "src": "/images/icons-192.png",
+    "type": "image/png",
+    "sizes": "192x192"
+  },
+  {
+    "src": "/images/icons-512.png",
+    "type": "image/png",
+    "sizes": "512x512"
+  }
+]
+
+
+6)START URL
+
+The start_url tells the browser where your application should start when it is launched, and prevents the app from starting on whatever page the user was on when they added your app to their home screen.
+
+Your start_url should direct the user straight into your app, rather than a product landing page. Think about what the user will want to do once they open your app, and place them there.
+
+
+7)BACKGROUND COLOR
+
+The background_color property is used on the splash screen when the application is first launched.
+
+
+8)DISPLAY
+
+You can customize what browser UI is shown when your app is launched. For example, you can hide the address bar and browser chrome. Or games may want to go completely full screen.
+
+
+9)ORIENTATION
+
+You can enforce a specific orientation, which is advantageous for apps that work in only one orientation, such as games. Use this selectively. Users prefer selecting the orientation.
+"orientation": "landscape"
+
+
+10)SCOPE
+
+The scope defines the set of URLs that the browser considers to be within your app, and is used to decide when the user has left the app, and should be bounced back out to a browser tab. The scope controls the URL structure that encompasses all the entry and exit points in your web app. Your start_url must reside within the scope.
+
+
+A few other tips:
+
+If you don't include a scope in your manifest, then the default implied scope is the directory that your web app manifest is served from.
+The scope attribute can be a relative path (../), or any higher level path (/) which would allow for an increase in coverage of navigations in your web app.
+The start_url must be in the scope.
+The start_url is relative to the path defined in the scope attribute.
+A start_url starting with / will always be the root of the origin.
+
+
+11)
+theme_color
+The theme_color sets the color of the tool bar, and may be reflected in the app's preview in task switchers.
+
+"theme_color": "#3367D6"
+
+
+12)Chrome will automatically create the splash screen from the manifest properties, including:
+
+name
+background_color
+icons
+
+
+
+@Adding to the Home Screen
+
+1)Add to Home Screen, sometimes referred to as the web app install prompt, makes it easy for users to install your Progressive Web App on their mobile or desktop device. After the user accepts the prompt, your PWA will be added to their launcher, and it will run like any other installed app.
+
+2)What are the criteria?
+
+In order for a user to be able to install your Progressive Web App, it needs to meet the following criteria:
+
+The web app is not already installed
+
+Meets a user engagement heuristic (currently, the user has interacted with the domain for at least 30 seconds)
+
+Includes a web app manifest that includes:
+short_name or name
+icons must include a 192px and a 512px sized icons
+start_url
+display must be one of: fullscreen, standalone, or minimal-ui
+Served over HTTPS (required for service workers)
+Has registered a service worker with a fetch event handler
+
+
+3)When these criteria are met, Chrome will fire a beforeinstallprompt event that you can use to prompt the user to install your Progressive Web App
+
+4)On Android, when the WebAPK is launched, Chrome will check the currently installed manifest against the live manifest. If an update is required, it will be queued and updated once the device has is plugged in and connected to WiFi.
